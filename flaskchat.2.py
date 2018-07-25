@@ -13,7 +13,6 @@ messages = [
 def show_join():
     return render_template("join.html")
 
-
 @app.route("/join")
 def do_join():
     username = request.args['username']
@@ -21,23 +20,8 @@ def do_join():
 
 @app.route("/chat/<username>")
 def show_chat(username):
-    l = []
-    for message in messages:
-        if "@" not in message:
-            l.append(message)
-        if "<username>" in message:
-            l.append(message)
+    return render_template("chat.html", messages=messages, username=username)
 
-    return render_template("chat.html", messages=l, username=username)
-
-@app.route("/chat/<username>/tags/<hashtag>")
-def show_tags(username, hashtag):
-    fm = []
-    for message in messages:
-        if "#" + hashtag.lower() in message.lower():
-            fm.append(message)
-            
-    return render_template("chat.html", messages=fm, username=username)
 
 @app.route("/new", methods=['POST'])
 def add_new_message():
@@ -45,8 +29,6 @@ def add_new_message():
     username = request.form['username']
     messages.append(username + ": " + message)
     return redirect("/chat/" + username)
-
-
 
 
 
